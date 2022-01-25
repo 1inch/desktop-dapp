@@ -1,0 +1,30 @@
+{
+  "name": "1inch",
+  "version": "1.0.0",
+  "description": "1inch desktop DApp",
+  "main": "src/main.js",
+  "private": true,
+  "scripts": {
+    "prebuild": "rm -rf release && tsc",
+    "build": "npx electron-builder build --publish=never -mwl",
+    "deploy": "npx electron-builder build --publish=always -mwl"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/1inch/desktop-dapp.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/1inch/desktop-dapp/issues"
+  },
+  "homepage": "https://github.com/1inch/desktop-dapp#readme",
+  "dependencies": {
+    "electron-updater": "^4.6.1"
+  },
+  "devDependencies": {
+    "electron": "^16.0.7",
+    "electron-builder": "^22.14.5",
+    "typescript": "^4.5.5"
+  }
+}
