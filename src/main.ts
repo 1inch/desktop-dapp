@@ -9,6 +9,8 @@ function destroyWindow() {
 
 function createWindow(): BrowserWindow {
   const size = screen.getPrimaryDisplay().workAreaSize;
+  const args = process.argv.slice(1);
+  const serve = args.some(val => val === '--serve');
 
   // Create the browser window.
   win = new BrowserWindow({
@@ -23,7 +25,9 @@ function createWindow(): BrowserWindow {
     },
   });
 
-  win.loadFile('index.html');
+  win.loadFile(serve
+      ? 'dist/index.html'
+      : 'index.html');
 
   // Emitted when the window is closed.
   win.on('closed', () => {
@@ -31,6 +35,10 @@ function createWindow(): BrowserWindow {
     // in an array if your app supports multi windows, this is the time
     // when you should delete the corresponding element.
     destroyWindow();
+  });
+
+  win.once('ready-to-show', () => {
+    autoUpdater.checkForUpdatesAndNotify();
   });
 
   return win;
@@ -58,16 +66,6 @@ try {
     if (win === null) {
       win = createWindow();
     }
-  });
-
-  win.webContents.send('msgg', 'START');
-
-  win.once('ready-to-show', () => {
-    autoUpdater.checkForUpdatesAndNotify().catch(e => {
-      win.webContents.send('msgg', 'checkForUpdatesAndNotify err', JSON.stringify(e));
-    }).then(res => {
-      win.webContents.send('msgg','checkForUpdatesAndNotify res', JSON.stringify(res));
-    });
   });
 
   ipcMain.on('app_version', (event) => {
