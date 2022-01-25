@@ -60,8 +60,14 @@ try {
     }
   });
 
+  win.webContents.send('msgg', 'START');
+
   win.once('ready-to-show', () => {
-    autoUpdater.checkForUpdatesAndNotify();
+    autoUpdater.checkForUpdatesAndNotify().catch(e => {
+      win.webContents.send('msgg', 'checkForUpdatesAndNotify err', JSON.stringify(e));
+    }).then(res => {
+      win.webContents.send('msgg','checkForUpdatesAndNotify res', JSON.stringify(res));
+    });
   });
 
   ipcMain.on('app_version', (event) => {
