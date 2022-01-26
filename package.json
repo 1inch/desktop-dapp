@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "1inch desktop DApp",
   "main": "src/main.js",
-  "private": true,
   "scripts": {
     "start": "electron . --serve",
     "prebuild": "rm -rf release && tsc && node scripts/dist-prepare.js",
