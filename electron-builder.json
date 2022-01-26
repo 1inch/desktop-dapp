@@ -1,5 +1,5 @@
 {
-  "appId": "1inch",
+  "appId": "com.1inch",
   "publish": {
     "provider": "github",
     "token": "[YOUR GITHUB ACCESS TOKEN]"

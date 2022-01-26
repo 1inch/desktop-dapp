@@ -1,14 +1,15 @@
 {
   "name": "1inch",
-  "version": "1.0.1",
+  "version": "1.0.0",
   "description": "1inch desktop DApp",
   "main": "src/main.js",
   "private": true,
   "scripts": {
     "start": "electron . --serve",
-    "prebuild": "rm -rf release && tsc",
+    "prebuild": "rm -rf release && tsc && node scripts/dist-prepare.js",
     "build": "npx electron-builder build --publish=never -mwl",
-    "deploy": "npx electron-builder build --publish=always -mwl"
+    "deploy": "npx electron-builder build --publish=always -mwl",
+    "copy:dist": "rm -rf dist/* && cp -R ../1inch-v2/dist/1inch/* ./dist"
   },
   "repository": {
     "type": "git",
