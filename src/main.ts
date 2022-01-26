@@ -1,5 +1,6 @@
 import { app, BrowserWindow, screen, ipcMain } from 'electron';
 import { autoUpdater } from 'electron-updater';
+import ElectronLog from 'electron-log';
 
 let win: BrowserWindow | null = null;
 
@@ -38,7 +39,13 @@ function createWindow(): BrowserWindow {
   });
 
   win.once('ready-to-show', () => {
-    autoUpdater.checkForUpdatesAndNotify();
+    win.webContents.openDevTools();
+    ElectronLog.transports.file.level = 'debug';
+    autoUpdater.logger = ElectronLog;
+
+    setTimeout(() => {
+      autoUpdater.checkForUpdatesAndNotify();
+    }, 5000);
   });
 
   return win;
@@ -73,16 +80,23 @@ try {
   });
 
   ipcMain.on('restart_app', () => {
+    win.webContents.send('bus_msg', 'RESTART_APP_START');
+
     autoUpdater.quitAndInstall();
+
+    win.webContents.send('bus_msg', 'RESTART_APP_FINISH');
   });
 
   autoUpdater.on('update-available', () => {
     win.webContents.send('update_available');
   });
+
   autoUpdater.on('update-downloaded', () => {
     win.webContents.send('update_downloaded');
   });
+
 } catch (e) {
+  console.error(e);
   // Catch Error
   // throw e;
 }
